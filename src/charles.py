@@ -1,10 +1,6 @@
 import pygame
 import random
-from pygame.locals import (
-  K_UP, K_DOWN, 
-  K_MINUS, K_UNDERSCORE, 
-  K_PLUS, K_EQUALS
-)
+from pygame.locals import K_UP, K_DOWN
 
 width, height = 250, 150
 boxWidth, boxHeight = 200, 10
@@ -31,6 +27,7 @@ class piston(pygame.sprite.Sprite):
         self.rect.y += self.move
 
 class particle(pygame.sprite.Sprite):
+  ptcUpdate = 0
   dr = [
     [0, 1, 1, 1, 0, -1, -1, -1],
     [-1, -1, 0, 1, 1, 1, 0, -1]
@@ -48,8 +45,9 @@ class particle(pygame.sprite.Sprite):
     )
   def update(self):
     pstPos = (sprite1.sprite.rect.x, sprite1.sprite.rect.y)
+    self.ptcUpdate = (self.ptcUpdate+1)%ptcTime
     # Move particle
-    if ptcUpdate==0:
+    if self.ptcUpdate==0:
       self.rect.x += self.dr[0][self.drIndex]
       self.rect.y += self.dr[1][self.drIndex]
       if pstPos[0]+10>self.rect.x:
@@ -60,56 +58,11 @@ class particle(pygame.sprite.Sprite):
         self.drIndex = random.randint(5, 7)
       if height+190<self.rect.y:
         self.drIndex = random.randint(7, 9)%8
-
-class burner(pygame.sprite.Sprite):
-  def __init__(self):
-    super(burner, self).__init__()
-    self.image = pygame.image.load("img/fire.png")
-    self.image = pygame.transform.scale(self.image, (100, 150))
-    self.rect = self.image.get_rect()
-    self.rect.center = (250, 450)
-  def update(self):
-    pass
-
-def charles(screen):
-  global sprite1, ptcUpdate
+        
+def charles_init():
+  global sprite1
   sprite1 = pygame.sprite.GroupSingle(piston())
-  sprite2 = pygame.sprite.GroupSingle(burner())
-  spriteGroup = pygame.sprite.Group(particle())
-  btnClickedPlus = btnClickedMinus = ptcUpdate = 0
   
-  running = True
-  while running:
-    screen.fill((255, 255, 255))
-    for event in pygame.event.get():
-      if event.type==pygame.QUIT:
-        running = False
-        
-    # Add & Delete particle
-    pressed_keys = pygame.key.get_pressed()
-    if pressed_keys[K_EQUALS] or pressed_keys[K_PLUS]:
-      btnClickedPlus = (btnClickedPlus+1)%btnTime
-      if btnClickedPlus==0:
-        spriteGroup.add(particle())
-    if pressed_keys[K_UNDERSCORE] or pressed_keys[K_MINUS]:
-      btnClickedMinus = (btnClickedMinus+1)%btnTime
-      if btnClickedMinus==0 and len(spriteGroup)>1:
-        spriteList = spriteGroup.sprites()
-        spriteGroup.remove(spriteList[random.randint(0, len(spriteList)-1)])
-        
-    # Update
-    ptcUpdate = (ptcUpdate+1)%ptcTime
-    sprite1.update()
-    sprite2.update()
-    spriteGroup.update()
-    
-    # Draw
-    sprite2.draw(screen)
-    sprite1.draw(screen)
-    spriteGroup.draw(screen)
-    pygame.draw.rect(screen, (0, 0, 0), [(width-75, height), (boxHeight, boxWidth)])
-    pygame.draw.rect(screen, (0, 0, 0), [(width+75, height), (boxHeight, boxWidth)])
-    pygame.draw.rect(screen, (0, 0, 0), [(width-75, height+boxWidth), (boxWidth-40, boxHeight)])
-    pygame.draw.rect(screen, (0, 0, 0), [(200, 490), (100, 10)]) # burner
-    
-    pygame.display.flip()
+def charles_execution(screen):
+  sprite1.update()
+  sprite1.draw(screen)
