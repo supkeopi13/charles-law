@@ -8,7 +8,7 @@ ptcTime, btnTime, pstTime = 10, 500, 15
 
 class piston(pygame.sprite.Sprite):
   UP, DOWN = 0, 0
-  move, limit = 1, 30
+  move, limit = 1, 20
   def __init__(self):
     super(piston, self).__init__()
     self.image = pygame.Surface((160, 10))

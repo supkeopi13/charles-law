@@ -1,11 +1,9 @@
-import pygame
-import random
+import pygame, random
+from pygame.locals import K_MINUS, K_UNDERSCORE, K_PLUS, K_EQUALS
+
 from src.charles import *
 from src.burner import fire, wood
-from pygame.locals import (
-  K_MINUS, K_UNDERSCORE, 
-  K_PLUS, K_EQUALS
-)
+from src.object import graduation
 
 def main():
   pygame.init()
@@ -14,6 +12,7 @@ def main():
 
   charles_init()
   sprite2 = pygame.sprite.Group([fire(), wood()])
+  sprite3 = pygame.sprite.Group(graduation())
   spriteGroup = pygame.sprite.Group(particle())
   btnClickedPlus = btnClickedMinus = 0
   
@@ -25,6 +24,7 @@ def main():
         running = False
     # Update
     sprite2.update()
+    sprite3.update()
     spriteGroup.update()
     # Add & Delete particle
     pressed_keys = pygame.key.get_pressed()
@@ -41,6 +41,7 @@ def main():
     charles_execution(screen)
     # Draw
     sprite2.draw(screen)
+    sprite3.draw(screen)
     spriteGroup.draw(screen)
     pygame.draw.rect(screen, (0, 0, 0), [(width-75, height), (boxHeight, boxWidth)])
     pygame.draw.rect(screen, (0, 0, 0), [(width+75, height), (boxHeight, boxWidth)])

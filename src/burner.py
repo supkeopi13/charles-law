@@ -4,7 +4,7 @@ class wood(pygame.sprite.Sprite):
   def __init__(self):
     super(wood, self).__init__()
     self.image = pygame.Surface((100, 10))
-    self.image.fill((0, 0, 0))
+    self.image.fill((111, 78, 55))
     '''
     self.image = pygame.image.load("img/wood.png")
     self.image = pygame.transform.scale(self.image, (100, 10))
