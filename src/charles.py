@@ -1,5 +1,4 @@
-import pygame
-import random
+import pygame, random
 from pygame.locals import K_UP, K_DOWN
 
 width, height = 250, 150
@@ -63,6 +62,6 @@ def charles_init():
   global sprite1
   sprite1 = pygame.sprite.GroupSingle(piston())
   
-def charles_execution(screen):
+def charles_execute(screen):
   sprite1.update()
   sprite1.draw(screen)

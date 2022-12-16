@@ -1,18 +1,7 @@
 import pygame, random
 from pygame.locals import K_MINUS, K_UNDERSCORE, K_PLUS, K_EQUALS
-
 from src.charles import *
-from src.burner import fire, wood
-from src.object import graduation
-
-class background(pygame.sprite.Sprite):
-  def __init__(self):
-    super(background, self).__init__()
-    self.image = pygame.image.load("img/background.png")
-    self.image = pygame.transform.scale(self.image, (500, 500))
-    self.rect = self.image.get_rect()
-  def update(self):
-    pass
+from src.object import drawImage, drawSurface
 
 def main():
   pygame.init()
@@ -20,8 +9,11 @@ def main():
   pygame.display.set_caption('Charles\'s law')
 
   charles_init()
-  sprite2 = pygame.sprite.Group(background())
-  sprite3 = pygame.sprite.Group([fire(), wood(), graduation()])
+  sprite3 = pygame.sprite.Group([
+    drawImage("img/graduation.png", (100, 200), (400, 250)),
+    drawImage("img/fire.png", (100, 150), (250, 450)),
+    drawSurface((111, 78, 55), (100, 10), (250, 495))
+  ])
   spriteGroup = pygame.sprite.Group(particle())
   btnClickedPlus = btnClickedMinus = 0
   
@@ -30,8 +22,6 @@ def main():
     for event in pygame.event.get():
       if event.type==pygame.QUIT:
         running = False
-    # Screen
-    sprite2.draw(screen)
     # Update
     sprite3.update()
     spriteGroup.update()
@@ -46,9 +36,9 @@ def main():
       if btnClickedMinus==0 and len(spriteGroup)>1:
         spriteList = spriteGroup.sprites()
         spriteGroup.remove(spriteList[random.randint(0, len(spriteList)-1)])
-    # from Other file
-    charles_execution(screen)
     # Draw
+    screen.fill((255, 255, 255)) # Screen fill white
+    charles_execute(screen) # Piston draw
     sprite3.draw(screen)
     spriteGroup.draw(screen)
     pygame.draw.rect(screen, (0, 0, 0), [(width-75, height), (boxHeight, boxWidth)])
