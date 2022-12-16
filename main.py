@@ -5,14 +5,17 @@ from src.object import drawImage, drawSurface
 
 def main():
   pygame.init()
-  screen = pygame.display.set_mode((500, 500))
+  screen = pygame.display.set_mode((400, 500))
   pygame.display.set_caption('Charles\'s law')
 
   charles_init()
+  sprite2 = pygame.sprite.GroupSingle(
+    drawImage("img/ondogae.png", (200, 400), (80, 300))
+  )
   sprite3 = pygame.sprite.Group([
-    drawImage("img/graduation.png", (100, 200), (400, 250)),
-    drawImage("img/fire.png", (100, 150), (250, 450)),
-    drawSurface((111, 78, 55), (100, 10), (250, 495))
+    drawImage("img/graduation.png", (120, 200), (280, 250)),
+    drawImage("img/fire.png", (100, 150), (280, 450)),
+    drawSurface((111, 78, 55), (100, 10), (280, 495))
   ])
   spriteGroup = pygame.sprite.Group(particle())
   btnClickedPlus = btnClickedMinus = 0
@@ -22,9 +25,6 @@ def main():
     for event in pygame.event.get():
       if event.type==pygame.QUIT:
         running = False
-    # Update
-    sprite3.update()
-    spriteGroup.update()
     # Add & Delete particle
     pressed_keys = pygame.key.get_pressed()
     if pressed_keys[K_EQUALS] or pressed_keys[K_PLUS]:
@@ -36,10 +36,15 @@ def main():
       if btnClickedMinus==0 and len(spriteGroup)>1:
         spriteList = spriteGroup.sprites()
         spriteGroup.remove(spriteList[random.randint(0, len(spriteList)-1)])
+    # Update
+    sprite2.update()
+    sprite3.update()
+    spriteGroup.update()
     # Draw
     screen.fill((255, 255, 255)) # Screen fill white
-    charles_execute(screen) # Piston draw
+    sprite2.draw(screen)
     sprite3.draw(screen)
+    charles_execute(screen) # Piston & thermometer draw
     spriteGroup.draw(screen)
     pygame.draw.rect(screen, (0, 0, 0), [(width-75, height), (boxHeight, boxWidth)])
     pygame.draw.rect(screen, (0, 0, 0), [(width+75, height), (boxHeight, boxWidth)])

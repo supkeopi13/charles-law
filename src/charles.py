@@ -1,7 +1,7 @@
 import pygame, random
 from pygame.locals import K_UP, K_DOWN
 
-width, height = 250, 150
+width, height = 280, 150
 boxWidth, boxHeight = 200, 10
 ptcTime, btnTime, pstTime = 10, 500, 15
 
@@ -58,6 +58,16 @@ class particle(pygame.sprite.Sprite):
       if height+190<self.rect.y:
         self.drIndex = random.randint(7, 9)%8
         
+class Degree(pygame.sprite.Sprite):
+  def __init__(self, color, size, position):
+    super(Degree, self).__init__()
+    self.image = pygame.Surface(size)
+    self.image.fill(color)
+    self.rect = self.image.get_rect()
+    self.rect.bottomright = position
+  def update(self):
+    pass
+
 def charles_init():
   global sprite1
   sprite1 = pygame.sprite.GroupSingle(piston())
@@ -65,3 +75,6 @@ def charles_init():
 def charles_execute(screen):
   sprite1.update()
   sprite1.draw(screen)
+  pygame.sprite.GroupSingle(
+    Degree((255, 0, 0), (30, 390-sprite1.sprite.rect.y), (58, 395))
+  ).draw(screen)
